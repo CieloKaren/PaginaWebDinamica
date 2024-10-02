@@ -27,17 +27,17 @@ if (isset($_POST['register'])) {
 
     $user_id = $stmt_insert_user->insert_id;
 
-    // Inserción en la tabla experience
-    if (isset($_POST['organization'])) {
-        foreach ($_POST['organization'] as $index => $organization) {
-            $job = $_POST['job'][$index];
-            $stmt_insert_experience = $conn->prepare("INSERT INTO experience(user_id, organization, job) VALUES (?, ?, ?)");
-            $stmt_insert_experience->bind_param("iss", $user_id, $organization, $job);
-            if (!$stmt_insert_experience->execute()) {
-                echo "Error al insertar experiencia: " . $stmt_insert_experience->error;
-            }
+// Inserción en la tabla experience
+if (isset($_POST['organization'])) {
+    foreach ($_POST['organization'] as $index => $organization) {
+        $position = $_POST['job'][$index];
+        $stmt_insert_experience = $conn->prepare("INSERT INTO experience(user_id, organization, position) VALUES (?, ?, ?)");
+        $stmt_insert_experience->bind_param("iss", $user_id, $organization, $position);
+        if (!$stmt_insert_experience->execute()) {
+            echo "Error al insertar experiencia: " . $stmt_insert_experience->error;
         }
     }
+}
 
     // Inserción en la tabla education
     if (isset($_POST['institution'])) {
@@ -51,28 +51,27 @@ if (isset($_POST['register'])) {
         }
     }
 
-    // Inserción en la tabla languages
-    if (isset($_POST['language'])) {
-        foreach ($_POST['language'] as $index => $language) {
-            $level = $_POST['level'][$index];
-            $stmt_insert_languages = $conn->prepare("INSERT INTO languages(userid, language, level) VALUES (?, ?, ?)");
-            $stmt_insert_languages->bind_param("iss", $user_id, $language, $level);
-            if (!$stmt_insert_languages->execute()) {
-                echo "Error al insertar idiomas: " . $stmt_insert_languages->error;
-            }
+// Inserción en la tabla languages
+if (isset($_POST['language'])) {
+    foreach ($_POST['language'] as $index => $language) {
+        $level = $_POST['level'][$index];
+        $stmt_insert_languages = $conn->prepare("INSERT INTO languages(user_id, language, level) VALUES (?, ?, ?)");
+        $stmt_insert_languages->bind_param("iss", $user_id, $language, $level);
+        if (!$stmt_insert_languages->execute()) {
+            echo "Error al insertar idiomas: " . $stmt_insert_languages->error;
         }
     }
-
-    // Inserción en la tabla skills
-    if (isset($_POST['skill'])) {
-        foreach ($_POST['skill'] as $index => $skill) {
-            $stmt_insert_skills = $conn->prepare("INSERT INTO skills(userid, skill) VALUES (?, ?)");
-            $stmt_insert_skills->bind_param("is", $user_id, $skill);
-            if (!$stmt_insert_skills->execute()) {
-                echo "Error al insertar habilidades: " . $stmt_insert_skills->error;
-            }
+}
+// Inserción en la tabla skills
+if (isset($_POST['skill'])) {
+    foreach ($_POST['skill'] as $index => $skill) {
+        $stmt_insert_skills = $conn->prepare("INSERT INTO skills(user_id, skill) VALUES (?, ?)");
+        $stmt_insert_skills->bind_param("is", $user_id, $skill);
+        if (!$stmt_insert_skills->execute()) {
+            echo "Error al insertar habilidades: " . $stmt_insert_skills->error;
         }
     }
+}
 
     // Redirigir al usuario
     header("Location: index.html");
